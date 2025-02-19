@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="UserInterface" parent="GtkApplicationWindow">
+    <property name="title">st2ical</property>
+    <property name="default_width">720</property>
+    <property name="default_height">550</property>
+    <child>
+      <object class="GtkScrolledWindow">
+	<child>
+	  <!-- Main Box: Used to store both panes of the UI -->
+	  <object class="GtkBox">
+	    <property name="orientation">horizontal</property>
+	    <property name="homogeneous">true</property>
+	    <child>
+	      <!-- Left Pane: file selection and course info -->
+	      <object class="GtkBox">
+		<property name="orientation">vertical</property>
+		<property name="halign">fill</property> 
+		<property name="hexpand">true</property> 
+		<property name="margin_top">10</property>
+		<property name="margin_bottom">10</property>
+		<property name="margin_start">10</property>
+		<property name="margin_end">5</property>
+		<property name="spacing">10</property>	    
+		<child>
+		  <object class="GtkBox">
+		    <property name="orientation">horizontal</property>
+		    <property name="spacing">10</property>
+		    <child>
+		      <object class="GtkButton" id="file_button">
+			<property name="label">Open File</property>		    
+		      </object>
+		    </child>
+		    <child>
+		      <object class="GtkLabel" id="file_label">
+			<property name="label">No file selected...</property>
+			<property name="max_width_chars">20</property>
+			<property name="ellipsize">middle</property>
+		      </object>
+		    </child>
+		  </object>
+		</child>	
+		<child>
+		  <object class="GtkLabel">
+		    <property name="label">Enter CRN:</property>		
+		  </object>
+		</child>
+		<child>
+		  <object class="GtkEntry" id="crn_entry">
+		  </object>
+		</child>
+		<child>
+		  <!-- Course information -->
+		  <object class="GtkBox">
+		    <property name="orientation">vertical</property>
+		    <property name="spacing">2.5</property>		
+ 		    <child>
+		      <object class="GtkLabel">
+			<property name="label">Course Name:</property>
+			<property name="halign">start</property>
+		      </object>
+		    </child>
+		    <child>
+		      <object class="GtkEntry" id="name_field">
+		      </object>		  
+		    </child>		
+		    <child>
+		      <object class="GtkLabel">
+			<property name="label">Location:</property>
+			<property name="halign">start</property>
+		      </object>
+		    </child>
+		    <child>
+		      <object class="GtkEntry" id="location_field">
+		      </object>
+		    </child>
+		    <child>
+		      <object class="GtkLabel">
+			<property name="label">Meeting Days:</property>
+			<property name="halign">start</property>
+		      </object>
+		    </child>
+		    <child>
+		      <object class="GtkEntry" id="days_field">
+		      </object>		  
+		    </child>
+		    <child>
+		      <object class="GtkLabel">
+			<property name="label">Meeting Start:</property>
+			<property name="halign">start</property>
+		      </object>
+		    </child>
+		    <child>
+		      <object class="GtkEntry" id="meet_start_field">
+		      </object>		  
+		    </child>		
+		    <child>
+		      <object class="GtkLabel">
+			<property name="label">Meeting End:</property>
+			<property name="halign">start</property>
+		      </object>
+		    </child>
+		    <child>
+		      <object class="GtkEntry" id="meet_end_field">
+		      </object>		  
+		    </child>
+		    <child>
+		      <object class="GtkLabel">
+			<property name="label">Start Date:</property>
+			<property name="halign">start</property>
+		      </object>
+		    </child>
+		    <child>
+		      <object class="GtkEntry" id="date_start_field">
+		      </object>		  
+		    </child>
+		    <child>
+		      <object class="GtkLabel">
+			<property name="label">End Date:</property>
+			<property name="halign">start</property>
+		      </object>
+		    </child>
+		    <child>
+		      <object class="GtkEntry" id="date_end_field">
+		      </object>		  
+		    </child>			
+		  </object>
+		</child>
+		<child>
+		  <object class="GtkButton" id="add_button">
+		    <property name="label">Add Course</property>
+		    <property name="halign">end</property>
+		  </object>
+		</child>	
+	      </object>
+	    </child>	    
+	    <child>
+	      <!-- Right Pane: Selected Courses and File Saving -->
+	      <object class="GtkBox"> 
+		<property name="orientation">vertical</property>
+		<property name="halign">fill</property> 
+		<property name="hexpand">true</property> 
+		<property name="margin_top">10</property>
+		<property name="margin_bottom">10</property>
+		<property name="margin_start">5</property>
+		<property name="margin_end">10</property>
+		<property name="spacing">10</property>		
+		<child>
+		  <object class="GtkLabel">
+		    <property name="label">Selected Courses</property>
+		    <property name="hexpand">true</property>
+		  </object>
+		</child>
+		<child>
+		  <object class="GtkTextView" id="selected_view">
+		    <property name="hexpand">true</property>
+		    <property name="vexpand">true</property>
+		  </object>
+		</child>
+		<child>
+		  <object class="GtkButton" id="save_button">
+		    <property name="label">Save File</property>
+		    <property name="valign">center</property>
+		    <property name="halign">end</property>
+		    <property name="hexpand">true</property>
+		  </object>
+		</child>		
+	      </object>
+	    </child>
+	  </object> 
+	</child>	
+      </object>
+    </child>    
+  </template>
+</interface>
+  
