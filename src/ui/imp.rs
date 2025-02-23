@@ -7,10 +7,10 @@ use glib::subclass::InitializingObject;
 
 use gtk::{Button, Entry, Label, TextView};
 
-
 /* TODO:
  * Split boxes into their own widgets
- */ 
+ */
+
 // UI Object containing all widgets from composite template
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/st2ical/resources/window.ui")]
@@ -73,7 +73,7 @@ impl ObjectSubclass for UI {
 impl ObjectImpl for UI {
     fn constructed(&self) {
 	self.parent_constructed();
-	self.obj().connect_widgets();
+	self.obj().setup_callbacks();
     }
 }
 
