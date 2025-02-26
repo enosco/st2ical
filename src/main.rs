@@ -1,4 +1,5 @@
 mod ui;
+mod data;
 
 use gtk4 as gtk;
 use gtk::prelude::*;

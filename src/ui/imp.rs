@@ -4,9 +4,11 @@ use gtk::{glib, CompositeTemplate};
 use gtk::subclass::prelude::*;
 use gtk::prelude::*;
 use glib::subclass::InitializingObject;
-
 use gtk::{Button, Entry, Label, TextView};
 
+use crate::data;
+use std::cell::RefCell;
+use std::collections::HashMap;
 /* TODO:
  * Split boxes into their own widgets
  */
@@ -15,12 +17,14 @@ use gtk::{Button, Entry, Label, TextView};
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/st2ical/resources/window.ui")]
 pub struct UI {
+    /***** WIDGETS *****/
+    
     /* file loading */
     #[template_child]
     pub file_button: TemplateChild<Button>,
     #[template_child]
     pub file_label: TemplateChild<Label>,
-    
+
     /* course retrieval */
     #[template_child]
     pub crn_entry: TemplateChild<Entry>,
@@ -48,7 +52,12 @@ pub struct UI {
     pub selected_view: TemplateChild<TextView>,
     
     #[template_child]
-    pub save_button: TemplateChild<Button>    
+    pub save_button: TemplateChild<Button>,
+
+    /***** DATA *****/
+    //    pub course_data: Cell<HashMap<i32, data::Event>>,
+    pub database: RefCell<data::Database>,
+//	pub selected: Cell 
 }
 
 // define UI as subclass of ApplicationWindow
@@ -86,5 +95,3 @@ impl WindowImpl for UI {}
 
 // define traits for applicaiton windows
 impl ApplicationWindowImpl for UI {}
-
-

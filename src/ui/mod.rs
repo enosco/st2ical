@@ -1,13 +1,15 @@
 mod imp;
-use crate::data::*;
+use crate::data;
 
 use gtk4 as gtk;
 use gtk::glib::{self, clone, Object};
 use gtk::gio;
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
-use gtk::Application;//, FileChooserNative, FileChooserAction};
-//use std::borrow:
+use gtk::Application;
+
+use std::io::BufReader;
+use std::fs::File;
 
 // Establish custom class, UI, based on application window
 glib::wrapper! {
@@ -21,27 +23,40 @@ impl UI {
         Object::builder().property("application", app).build()
     }
 
-    fn setup_callbacks(&self) {
+    fn setup_callbacks(&self) {	
 	let ui = self.imp();
 
 	ui.file_button.connect_clicked(clone!(
 	    #[weak] ui,
 	    move |_| {
-		Self::open_dialog(ui.obj().as_ref());
+		//Self::open_dialog(ui.obj().as_ref());
+		ui.obj().open_dialog();
 	    }));
-	 
 
-	ui.crn_entry.connect_activate(move |entry| {
-
-	    // make parse return Result<hashmap, err>
-	    let crn = entry.buffer().text();
-
-
+	ui.save_button.connect_clicked(move |_| {
+	    data::register_click("test")
 	});
+
+	ui.crn_entry.connect_activate(clone!(
+	    #[weak] ui,
+	    move |entry| {
+		
+		// make parse return Result<hashmap, err>
+		let crn = entry.buffer()
+		    .text()
+		    .as_str()
+		    .parse();
+
+		if let Ok(crn) = crn {
+		    ui.obj().load_course(crn);
+		}
+	}));
     }
 
-    fn open_dialog(&self) {
 
+    // some of this file manip might be redundant, check that
+
+    fn open_dialog(&self) {
 	let dialog = gtk::FileDialog::builder()
 	    .accept_label("Open")
 	    .modal(true)
@@ -58,32 +73,41 @@ impl UI {
 			.to_str()
 			.expect("ERR: cannot be converted to str"));
 		
-		Self::load_file(&file);
+		Self::load_file(&ui, &file);
 	    }
 	}));
-		
-    }
-  
-    fn load_file(file: &gio::File) {
-		
     }
 
+    fn load_file(&self, file: &gio::File) {
+	let mut db = self.imp().database.borrow_mut();
+	
+	if let Some(path) = file.path() {
+	    //	    let reader = std::io::BufReader::new(path);
+	    let file = File::open(path)
+		.expect("ERR: could not open file");
+	    
+	    db.load_from_xml(BufReader::new(file));
+	} else {
+	    println!("invalid file path");
+	}
+	
+	/*
+	self.imp().database
+	    .borrow_mut()
+	.load_from_xml(&file.path().expect("ERR: invalid file path"));
+	*/
+    }
 
-
-
-	/*let file = dialog.file()
-		    .expect("ERR: failed to open file");
-
-		window.imp().file_label.set_label(
-		    file.basename()
-			.expect("ERR: invalid pathbuf")
-			.to_str()
-			.expect("ERR: cannot be converted to str"));
-
-		data::parse_into_map(&file.path()
-			.expect("ERR: invalid path"));
-
-*/	
-//    }
-    
+    fn load_course(&self, crn: i32) {
+	let ui = self.imp();
+	let db = ui.database.borrow();
+		
+	if let Some(event) = db.retrieve_course(crn) {	 
+	    ui.days_field.set_text(&event.days);
+	    ui.location_field.set_text(&event.location);
+	} else {
+	    println!("could not retrieve course");
+	}
+	
+    }
 }
