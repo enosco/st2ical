@@ -1,28 +1,17 @@
-mod ui;
-mod data;
+mod app;
+mod gui;
 
-use gtk4 as gtk;
-use gtk::prelude::*;
-use gtk::{gio, glib, Application};
-use ui::UI;
+use app::App;
+use gtk4::{glib, gio, prelude::*};
 
-fn main() -> gtk4::glib::ExitCode {
+fn main() -> glib::ExitCode {
 
     gio::resources_register_include!("st2ical.gresource")
-	.expect("Failed to register resources.");
-    
-    let app = gtk4::Application::builder()
-	.application_id("com.github.st2ical")
-	.build();
+	.expect("ERR: failed to register resources.");
 
-    app.connect_activate(init);
+    let app = App::new("com.github.st2ical");
+    
+    
+    
     app.run()
 }
-
-fn init(app: &Application) {
-    let app_ui = UI::new(app);
-    app_ui.present();
-}
-
-
-   
