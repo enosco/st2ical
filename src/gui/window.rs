@@ -1,7 +1,12 @@
+mod file_hub;
+
 use crate::app;
 
 use gtk4::{glib, gio,
+	   prelude::*,
 	   subclass::prelude::*};
+
+use file_hub::FileChooserHub;
 
 glib::wrapper! {
     pub struct Window(ObjectSubclass<imp::Window>)
@@ -23,7 +28,7 @@ mod imp {
     #[derive(CompositeTemplate, Default)]
     #[template(resource = "/st2ical/resources/window.ui")]
     pub struct Window {
-	
+	file_hub: Option<FileChooserHub>,
     }
 
     #[glib::object_subclass]
@@ -44,6 +49,10 @@ mod imp {
     impl ObjectImpl for Window {
 	fn constructed(&self) {	   
 	    self.parent_constructed();
+	    
+	    let file_hub = FileChooserHub::new();
+	    self.obj().set_child(Some(&file_hub));
+
 	}
     }
     
