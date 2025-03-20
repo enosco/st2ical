@@ -1,4 +1,4 @@
-mod file_hub;
+pub mod file_hub;
 
 use crate::app;
 
@@ -11,12 +11,22 @@ use file_hub::FileChooserHub;
 glib::wrapper! {
     pub struct Window(ObjectSubclass<imp::Window>)
 	@extends gtk4::ApplicationWindow, gtk4::Window, gtk4::Widget,
-    @implements gio::ActionMap, gio::ActionGroup;
+    @implements gtk4::Buildable; // gio::ActionMap, gio::ActionGroup;
 }
 
 impl Window {
     pub fn new(app: &app::App) -> Self {
-	glib::Object::builder().property("application", app).build()
+	glib::Object::builder()
+	    .property("application", app)
+	    .build()
+    }
+
+    pub fn file_hub(&self) -> FileChooserHub {
+	self.imp().file_hub.get()
+    }
+
+    pub fn file_view(&self) -> gtk4::ColumnView {
+	self.imp().file_view.get()
     }
 }
 
@@ -26,9 +36,12 @@ mod imp {
     use glib::subclass::InitializingObject;
 
     #[derive(CompositeTemplate, Default)]
-    #[template(resource = "/st2ical/resources/window.ui")]
+    #[template(resource = "/st2ical/resources/window.ui")]   
     pub struct Window {
-	file_hub: Option<FileChooserHub>,
+	#[template_child]
+	pub file_hub: TemplateChild::<FileChooserHub>,
+	#[template_child]
+	pub file_view: TemplateChild::<gtk4::ColumnView>,
     }
 
     #[glib::object_subclass]
@@ -49,10 +62,8 @@ mod imp {
     impl ObjectImpl for Window {
 	fn constructed(&self) {	   
 	    self.parent_constructed();
-	    
-	    let file_hub = FileChooserHub::new();
-	    self.obj().set_child(Some(&file_hub));
 
+	    let file_hub = self.obj().file_hub();
 	}
     }
     

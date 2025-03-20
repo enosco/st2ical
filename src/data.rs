@@ -1,37 +1,31 @@
-use std::collections::HashMap;
-use std::io::{Error, ErrorKind};
-use std::io::Read;
-use quick_xml::reader::Reader;
+use crate::course_object::CourseObject;
 
+use std::path::Path;
+use calamine::{Xlsx, open_workbook, Reader, RangeDeserializerBuilder, Data, Error};
+use gtk4::{gio, prelude::Cast};
 
-pub struct Event {
-    pub days: String,
-    pub location: String,
-    pub time_start: String,
-    pub time_end: String,
-    pub date_start: String,
-    pub date_end: String,
-}
-
-#[derive(Default)]
-pub struct Database {
-    course_data: HashMap<i32, Event>,  
-}
-
-impl Database {
+pub fn parse_xlsx(path: &Path) -> Result<gio::ListStore, Error> {
+    let course_data = gio::ListStore::new::<CourseObject>();
     
-    pub fn load_from_xml(&mut self, reader: impl Read) -> Result<(), Error> {
-	return Ok(())
+    let mut workbook: Xlsx<_> = open_workbook(path)
+	.expect("Err: cannot open file");
+    let range = workbook.worksheet_range("Sheet1")
+	.expect("Err: unable to get range");	
+    let mut iter = range.deserialize::<Vec<String>>()
+	.expect("Err: unable to create iterator");
+    
+    while let Some(Ok(row)) = iter.next() {	   
+	
+	let crn = row.get(0)
+	    .unwrap()
+		.clone();
+	
+	let name = row.get(7)
+	    .unwrap()
+	    .clone();
+	
+	course_data.append(&CourseObject::new(crn, name));
     }
-
-    pub fn retrieve_course(&self, crn: i32) -> Option<&Event> {
-	return self.course_data.get(&crn);
-    }
+	
+    Ok(course_data)
 }
-
-pub fn register_click(name: &str) {
-    println!("{} just clicked", name);
-}
-
-
-

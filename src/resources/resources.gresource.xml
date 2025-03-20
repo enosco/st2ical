@@ -2,5 +2,6 @@
 <gresources>
   <gresource prefix="/st2ical/resources">
     <file compressed="true" preprocess="xml-stripblanks">window.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">file_hub.ui</file>
   </gresource>
 </gresources>

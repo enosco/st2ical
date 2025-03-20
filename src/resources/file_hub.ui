@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="FileChooserHub" parent="GtkWidget">
+    <child>
+      <object class="GtkBox">
+	<property name="orientation">horizontal</property>
+	<property name="spacing">10</property>
+	<child>
+	  <object class="GtkButton" id="file_button">
+            <property name="label">Choose File</property>
+	  </object>
+	</child>
+	<child>
+	  <object class="GtkLabel" id="file_label">
+	    <property name="label">No file selected...</property>
+	    <property name="max_width_chars">20</property>
+	    <property name="ellipsize">middle</property>
+	    <property name="hexpand">true</property>
+	    <property name="halign">start</property>
+	  </object>
+	</child>
+	<child>
+	  <object class="GtkButton" id="load_button">
+	    <property name="label">Load File</property>
+	  </object>
+	</child>
+      </object>
+    </child>
+  </template>
+</interface>

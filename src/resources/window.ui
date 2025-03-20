@@ -5,9 +5,23 @@
     <property name="default_width">720</property>
     <property name="default_height">550</property>
     <child>
-      <object class="GtkButton">
-	<property name="label">hihiihiii!!! :33</property>
-      </object>
+      <object class="GtkScrolledWindow">
+	<child>
+	  <object class="GtkBox">
+	  <property name="orientation">vertical</property>
+	    <child>	      
+	      <object class="FileChooserHub" id="file_hub">
+	      </object>
+	    </child>
+	    <child>
+	      <object class="GtkColumnView" id="file_view">
+		<property name="vexpand">true</property>
+<!--		<property name="hexpand">true</property>-->
+	      </object>
+	    </child>
+	  </object>	  
+	</child>	
+      </object>     
     </child>
   </template>
 </interface>
